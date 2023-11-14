@@ -28,21 +28,22 @@ class PaymentService {
     Znajdź i zwróć płatności posortowane po dacie malejąco
      */
     List<Payment> findPaymentsSortedByDateDesc() {
-       return paymentRepository.findAll().stream().sorted(Comparator.comparing(Payment::getPaymentDate).reversed()).collect(Collectors.toList());
+        return paymentRepository.findAll().stream().sorted(Comparator.comparing(Payment::getPaymentDate).reversed()).collect(Collectors.toList());
     }
 
     /*
     Znajdź i zwróć płatności posortowane po liczbie elementów rosnąco
      */
     List<Payment> findPaymentsSortedByItemCountAsc() {
-        throw new RuntimeException("Not implemented");
+        return paymentRepository.findAll().stream().sorted((Comparator<? super Payment>) findPaymentsSortedByItemCountAsc()).collect(Collectors.toList());
     }
 
     /*
     Znajdź i zwróć płatności posortowane po liczbie elementów malejąco
      */
     List<Payment> findPaymentsSortedByItemCountDesc() {
-        throw new RuntimeException("Not implemented");
+
+        return paymentRepository.findAll().stream().sorted((Comparator<? super Payment>) findPaymentsSortedByItemCountDesc()).collect(Collectors.toList());
     }
 
     /*
