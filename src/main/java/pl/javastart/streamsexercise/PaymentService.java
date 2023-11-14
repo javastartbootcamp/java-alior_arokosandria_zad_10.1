@@ -46,7 +46,7 @@ class PaymentService {
     List<Payment> findPaymentsSortedByItemCountDesc() {
 
         return paymentRepository.findAll().stream()
-                .sorted(Comparator.comparingInt(payment->payment.getPaymentItems().size()))
+                .sorted(Comparator.comparingInt((Payment payment)->payment.getPaymentItems().size()).reversed())
                 .collect(Collectors.toList());
     }
 
