@@ -45,7 +45,8 @@ class PaymentService {
      */
     List<Payment> findPaymentsSortedByItemCountDesc() {
 
-        return paymentRepository.findAll().stream().sorted(Comparator.comparingInt((Payment payment)->payment.getPaymentItems().size()).reversed())
+        return paymentRepository.findAll().stream()
+                .sorted(Comparator.comparingInt((Payment payment)->payment.getPaymentItems().size()).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -53,7 +54,9 @@ class PaymentService {
     Znajdź i zwróć płatności dla wskazanego miesiąca
      */
     List<Payment> findPaymentsForGivenMonth(YearMonth yearMonth) {
-        throw new RuntimeException("Not implemented");
+
+        return paymentRepository.findAll().stream()
+                .filter(month->month.getPaymentDate().getMonth().equals(yearMonth)).collect(Collectors.toList());
     }
 
     /*
