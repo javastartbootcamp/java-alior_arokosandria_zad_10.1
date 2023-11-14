@@ -2,8 +2,10 @@ package pl.javastart.streamsexercise;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 class PaymentService {
 
@@ -19,14 +21,14 @@ class PaymentService {
     Znajdź i zwróć płatności posortowane po dacie rosnąco
      */
     List<Payment> findPaymentsSortedByDateAsc() {
-        throw new RuntimeException("Not implemented");
+        return paymentRepository.findAll().stream().sorted(Comparator.comparing(Payment::getPaymentDate)).collect(Collectors.toList());
     }
 
     /*
     Znajdź i zwróć płatności posortowane po dacie malejąco
      */
     List<Payment> findPaymentsSortedByDateDesc() {
-        throw new RuntimeException("Not implemented");
+       return paymentRepository.findAll().stream().sorted(Comparator.comparing(Payment::getPaymentDate).reversed()).collect(Collectors.toList());
     }
 
     /*
