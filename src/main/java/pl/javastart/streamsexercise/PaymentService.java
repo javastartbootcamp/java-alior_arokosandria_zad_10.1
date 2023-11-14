@@ -35,7 +35,9 @@ class PaymentService {
     Znajdź i zwróć płatności posortowane po liczbie elementów rosnąco
      */
     List<Payment> findPaymentsSortedByItemCountAsc() {
-        return paymentRepository.findAll().stream().sorted((Comparator<? super Payment>) findPaymentsSortedByItemCountAsc()).collect(Collectors.toList());
+        return paymentRepository.findAll().stream()
+                .sorted(Comparator.comparingInt(payment->payment.getPaymentItems().size()))
+                .collect(Collectors.toList());
     }
 
     /*
@@ -43,7 +45,9 @@ class PaymentService {
      */
     List<Payment> findPaymentsSortedByItemCountDesc() {
 
-        return paymentRepository.findAll().stream().sorted((Comparator<? super Payment>) findPaymentsSortedByItemCountDesc()).collect(Collectors.toList());
+        return paymentRepository.findAll().stream()
+                .sorted(Comparator.comparingInt(payment->payment.getPaymentItems().size()))
+                .collect(Collectors.toList());
     }
 
     /*
