@@ -67,7 +67,7 @@ class PaymentService {
      */
     List<Payment> findPaymentsForCurrentMonth() {
         return paymentRepository.findAll().stream()
-                .filter(month -> month.getPaymentDate().getMonth()==dateTimeProvider.zonedDateTimeNow().getMonth()).collect(Collectors.toList());
+                .filter(month -> YearMonth.from(month.getPaymentDate()).equals(YearMonth.from(dateTimeProvider.zonedDateTimeNow()))).collect(Collectors.toList());
     }
 
     /*
