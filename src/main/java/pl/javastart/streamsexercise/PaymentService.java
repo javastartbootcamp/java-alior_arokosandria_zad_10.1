@@ -1,10 +1,7 @@
 package pl.javastart.streamsexercise;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.YearMonth;
-import java.time.chrono.ChronoZonedDateTime;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -83,8 +80,8 @@ class PaymentService {
     Znajdź i zwróć płatności z jednym elementem
      */
     Set<Payment> findPaymentsWithOnePaymentItem() {
-        return  paymentRepository.findAll().stream()
-                .filter(payment -> payment.getPaymentItems().size()==1)
+        return paymentRepository.findAll().stream()
+                .filter(payment -> payment.getPaymentItems().size() == 1)
                 .collect(Collectors.toSet());
     }
 
@@ -92,7 +89,11 @@ class PaymentService {
     Znajdź i zwróć nazwy produktów sprzedanych w aktualnym miesiącu
      */
     Set<String> findProductsSoldInCurrentMonth() {
-        throw new RuntimeException("Not implemented");
+        return paymentRepository.findAll().stream()
+                .filter(month -> YearMonth.from(month.getPaymentDate()).equals(YearMonth.from(dateTimeProvider.zonedDateTimeNow())))
+                .flatMap(payment -> payment.getPaymentItems().stream())
+                .map(PaymentItem::getName)
+                .collect(Collectors.toSet());
     }
 
     /*
