@@ -59,7 +59,7 @@ class PaymentService {
     List<Payment> findPaymentsForGivenMonth(YearMonth yearMonth) {
 
         return paymentRepository.findAll().stream()
-                .filter(month -> month.getPaymentDate().getMonth().equals(yearMonth)).collect(Collectors.toList());
+                .filter(month -> YearMonth.from(month.getPaymentDate()).equals(yearMonth)).collect(Collectors.toList());
     }
 
     /*
