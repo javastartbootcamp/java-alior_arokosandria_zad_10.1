@@ -72,8 +72,7 @@ class PaymentService {
      */
     List<Payment> findPaymentsForGivenLastDays(int days) {
         return paymentRepository.findAll().stream()
-                .filter(month -> month.getPaymentDate()
-                        .isAfter(dateTimeProvider.zonedDateTimeNow().minusDays(days))).collect(Collectors.toList());
+                .filter(month -> month.getPaymentDate().isAfter(dateTimeProvider.zonedDateTimeNow().minusDays(days))).collect(Collectors.toList());
     }
 
     /*
@@ -120,14 +119,21 @@ class PaymentService {
     Znajdź i zwróć płatności dla użytkownika z podanym mailem
      */
     List<PaymentItem> getPaymentsForUserWithEmail(String userEmail) {
-        throw new RuntimeException("Not implemented");
+        return paymentRepository.findAll().stream()
+                .filter(user->user.getUser().getEmail().equals(userEmail))
+                .flatMap(payment -> payment.getPaymentItems().stream())
+                .collect(Collectors.toList());
+
     }
 
     /*
     Znajdź i zwróć płatności, których wartość przekracza wskazaną granicę
      */
     Set<Payment> findPaymentsWithValueOver(int value) {
-        throw new RuntimeException("Not implemented");
+        return paymentRepository.findAll().stream()
+                .filter(payment -> payment.getPaymentItems().stream()
+                        .anyMatch(paymentItem -> paymentItem.getRegularPrice().compareTo(BigDecimal.valueOf(value)) > 0))
+                .collect(Collectors.toSet());
     }
 
 }
