@@ -132,8 +132,7 @@ class PaymentService {
     Set<Payment> findPaymentsWithValueOver(int value) {
         return paymentRepository.findAll().stream()
                 .filter(payment -> payment.getPaymentItems().stream()
-                        .filter(paymentItem -> paymentItem.getFinalPrice().compareTo(BigDecimal.valueOf(value)) > 0).isParallel())
-                .collect(Collectors.toSet());
+                        .anyMatch(paymentItem -> paymentItem.getFinalPrice().intValue()>value)).collect(Collectors.toSet());
     }
 
 }
