@@ -130,9 +130,9 @@ class PaymentService {
     Znajdź i zwróć płatności, których wartość przekracza wskazaną granicę
      */
     Set<Payment> findPaymentsWithValueOver(int value) {
-        return paymentRepository.findAll().stream()
+        return (Set<Payment>) paymentRepository.findAll().stream()
                 .filter(payment -> payment.getPaymentItems().stream()
-                        .anyMatch(paymentItem -> paymentItem.getFinalPrice().intValue()>value)).collect(Collectors.toSet());
+                        .anyMatch(paymentItem -> paymentItem.getFinalPrice().doubleValue()>value));
     }
 
 }
