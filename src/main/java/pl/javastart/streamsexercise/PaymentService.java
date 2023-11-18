@@ -134,7 +134,7 @@ class PaymentService {
                 .filter(payment -> payment.getPaymentItems().stream()
                         .anyMatch(paymentItem ->
                                 paymentItem.getRegularPrice() != null &&
-                                        paymentItem.getFinalPrice().compareTo(BigDecimal.valueOf(value)) > 0))
+                                        paymentItem.getRegularPrice().compareTo(BigDecimal.valueOf(value)) > 0))
                 .collect(Collectors.toSet());
     }
 }
