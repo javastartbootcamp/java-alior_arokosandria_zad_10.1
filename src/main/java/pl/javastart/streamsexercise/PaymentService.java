@@ -99,10 +99,10 @@ class PaymentService {
     Policz i zwróć sumę sprzedaży dla wskazanego miesiąca
      */
     BigDecimal sumTotalForGivenMonth(YearMonth yearMonth) {
-       return paymentRepository.findAll().stream().filter(month -> YearMonth.from(month.getPaymentDate()).equals(yearMonth))
-               .flatMap(payment -> payment.getPaymentItems().stream())
-               .map(PaymentItem::getFinalPrice)
-               .reduce(BigDecimal.ZERO,BigDecimal::add);
+        return paymentRepository.findAll().stream().filter(month -> YearMonth.from(month.getPaymentDate()).equals(yearMonth))
+                .flatMap(payment -> payment.getPaymentItems().stream())
+                .map(PaymentItem::getFinalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     /*
@@ -112,7 +112,7 @@ class PaymentService {
         return paymentRepository.findAll().stream().filter(month -> YearMonth.from(month.getPaymentDate()).equals(yearMonth))
                 .flatMap(payment -> payment.getPaymentItems().stream())
                 .map(paymentItem -> paymentItem.getRegularPrice().subtract(paymentItem.getFinalPrice()))
-                .reduce(BigDecimal.ZERO,BigDecimal::add);
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     /*
@@ -120,7 +120,7 @@ class PaymentService {
      */
     List<PaymentItem> getPaymentsForUserWithEmail(String userEmail) {
         return paymentRepository.findAll().stream()
-                .filter(user->user.getUser().getEmail().equals(userEmail))
+                .filter(user -> user.getUser().getEmail().equals(userEmail))
                 .flatMap(payment -> payment.getPaymentItems().stream())
                 .collect(Collectors.toList());
 
@@ -130,9 +130,11 @@ class PaymentService {
     Znajdź i zwróć płatności, których wartość przekracza wskazaną granicę
      */
     Set<Payment> findPaymentsWithValueOver(int value) {
-        return (Set<Payment>) paymentRepository.findAll().stream()
+        return paymentRepository.findAll().stream()
                 .filter(payment -> payment.getPaymentItems().stream()
-                        .anyMatch(paymentItem -> paymentItem.getFinalPrice().doubleValue()>value));
+                        .anyMatch(paymentItem ->
+                                paymentItem.getRegularPrice() != null &&
+                                        paymentItem.getFinalPrice().compareTo(BigDecimal.valueOf(value)) > 0))
+                .collect(Collectors.toSet());
     }
-
 }
