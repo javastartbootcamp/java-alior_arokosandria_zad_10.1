@@ -100,14 +100,20 @@ class PaymentService {
     Policz i zwróć sumę sprzedaży dla wskazanego miesiąca
      */
     BigDecimal sumTotalForGivenMonth(YearMonth yearMonth) {
-        throw new RuntimeException("Not implemented");
+       return paymentRepository.findAll().stream().filter(month -> YearMonth.from(month.getPaymentDate()).equals(yearMonth))
+               .flatMap(payment -> payment.getPaymentItems().stream())
+               .map(PaymentItem::getFinalPrice)
+               .reduce(BigDecimal.ZERO,BigDecimal::add);
     }
 
     /*
     Policz i zwróć sumę przyznanych rabatów dla wskazanego miesiąca
      */
     BigDecimal sumDiscountForGivenMonth(YearMonth yearMonth) {
-        throw new RuntimeException("Not implemented");
+        return paymentRepository.findAll().stream().filter(month -> YearMonth.from(month.getPaymentDate()).equals(yearMonth))
+                .flatMap(payment -> payment.getPaymentItems().stream())
+                .map(paymentItem -> paymentItem.getRegularPrice().subtract(paymentItem.getFinalPrice()))
+                .reduce(BigDecimal.ZERO,BigDecimal::add);
     }
 
     /*
