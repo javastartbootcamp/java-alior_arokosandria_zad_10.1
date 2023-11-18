@@ -64,7 +64,8 @@ class PaymentService {
      */
     List<Payment> findPaymentsForCurrentMonth() {
         return paymentRepository.findAll().stream()
-                .filter(month -> YearMonth.from(month.getPaymentDate()).equals(YearMonth.from(dateTimeProvider.zonedDateTimeNow()))).collect(Collectors.toList());
+                .filter(month -> YearMonth.from(month.getPaymentDate()).equals(YearMonth.from(dateTimeProvider.zonedDateTimeNow())))
+                .collect(Collectors.toList());
     }
 
     /*
@@ -130,7 +131,7 @@ class PaymentService {
     Znajdź i zwróć płatności, których wartość przekracza wskazaną granicę
      */
     Set<Payment> findPaymentsWithValueOver(int value) {
-        return (Set<Payment>) paymentRepository.findAll().stream()
+        return paymentRepository.findAll().stream()
                 .filter(payment -> payment.getPaymentItems().stream()
                         .map(PaymentItem::getFinalPrice)
                         .reduce(BigDecimal.ZERO, BigDecimal::add)
